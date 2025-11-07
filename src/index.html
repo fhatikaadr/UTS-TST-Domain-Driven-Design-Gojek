@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisasi API Gojek - Demo Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Maiandra+GD&family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="header-section">
+            <div class="logo-container">
+                <div class="gojek-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Gojek_logo_2019.svg" alt="Gojek Logo">
+                </div>
+                <div>
+                    <h1>API Integration Demo</h1>
+                    <p class="subtitle">Demonstrasi Integrasi dengan 3 API Publik Platform Gojek</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="api-card">
+            <div class="card-header-custom">
+                <div class="icon-box maps">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div>
+                    <span class="badge-custom badge-real">✓ Live API</span>
+                    <h2 class="card-title">Google Maps API</h2>
+                    <p class="card-subtitle">Visualisasi Peta & Lokasi Real-time</p>
+                </div>
+            </div>
+            <p class="card-description">
+                Integrasi nyata dengan Google Maps API untuk menampilkan lokasi Kantor Gojek di Pasaraya Blok M, Jakarta. 
+                Fitur ini digunakan untuk tracking driver, menampilkan rute, dan estimasi waktu tempuh.
+            </p>
+            <div id="map"></div>
+            <div class="footer-note">
+                <i class="fas fa-info-circle"></i> Peta ini menggunakan Google Maps JavaScript API dengan marker interaktif
+            </div>
+        </div>
+
+        <div class="api-card">
+            <div class="card-header-custom">
+                <div class="icon-box payment">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div>
+                    <span class="badge-custom badge-mock">⚡ Simulasi</span>
+                    <h2 class="card-title">Midtrans Payment Gateway</h2>
+                    <p class="card-subtitle">Sistem Pembayaran & Top-Up GoPay</p>
+                </div>
+            </div>
+            
+            <div class="balance-display">
+                <div>
+                    <div class="balance-label">Saldo GoPay Anda</div>
+                    <div class="balance-amount" id="balance">Rp 125.000</div>
+                </div>
+                <i class="fas fa-wallet" style="font-size: 3rem; opacity: 0.3;"></i>
+            </div>
+            
+            <p class="card-description">
+                Simulasi integrasi dengan Midtrans API untuk proses top-up saldo GoPay. Dalam implementasi nyata, 
+                proses ini memerlukan server backend untuk keamanan transaksi.
+            </p>
+            
+            <button class="btn-gojek" onclick="simulasiMidtrans()">
+                <i class="fas fa-plus-circle"></i>
+                Top-Up GoPay Rp 50.000
+            </button>
+            
+            <div id="midtrans-response" class="response-box info" style="display:none;">
+                <i class="fas fa-spinner fa-spin"></i>
+                <div>
+                    <strong>Memproses Pembayaran</strong><br>
+                    Menunggu konfirmasi dari Midtrans Payment Gateway...
+                </div>
+            </div>
+        </div>
+
+        <div class="api-card">
+            <div class="card-header-custom">
+                <div class="icon-box notification">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div>
+                    <span class="badge-custom badge-mock">⚡ Simulasi</span>
+                    <h2 class="card-title">Firebase Cloud Messaging</h2>
+                    <p class="card-subtitle">Push Notification System</p>
+                </div>
+            </div>
+            <p class="card-description">
+                Simulasi pengiriman notifikasi push menggunakan Firebase Cloud Messaging (FCM). 
+                Digunakan untuk memberitahu pengguna tentang status pesanan, kedatangan driver, dan promo.
+            </p>
+            
+            <button class="btn-gojek btn-notification" onclick="simulasiFCM()">
+                <i class="fas fa-paper-plane"></i>
+                Kirim Notifikasi "Driver Tiba"
+            </button>
+            
+            <div id="fcm-response" class="response-box success" style="display:none;">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <strong>Notifikasi Berhasil Dikirim!</strong><br>
+                    Pesan "Driver Anda telah tiba!" berhasil dikirim melalui FCM Server.
+                </div>
+            </div>
+        </div>
+
+        <div class="credit-section">
+            <div class="credit-content">
+                <p class="credit-text">
+                    <i class="fas fa-code"></i> Dibuat oleh <strong>Fhatika Adhalisman Ryanjani</strong>
+                </p>
+                <p class="credit-nim">NIM: 18223062</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentBalance = 125000;
+        
+        function simulasiMidtrans() {
+            const responseBox = document.getElementById('midtrans-response');
+            responseBox.innerHTML = `
+                <i class="fas fa-spinner fa-spin"></i>
+                <div>
+                    <strong>Memproses Pembayaran</strong><br>
+                    Menunggu konfirmasi dari Midtrans Payment Gateway...
+                </div>
+            `;
+            responseBox.className = "response-box info";
+            responseBox.style.display = 'flex';
+
+            setTimeout(() => {
+                currentBalance += 50000;
+                document.getElementById('balance').textContent = 
+                    'Rp ' + currentBalance.toLocaleString('id-ID');
+                
+                responseBox.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <strong>Pembayaran Berhasil! 🎉</strong><br>
+                        Top-up Rp 50.000 berhasil diproses. Saldo GoPay Anda sekarang: <strong>Rp ${currentBalance.toLocaleString('id-ID')}</strong>
+                    </div>
+                `;
+                responseBox.className = "response-box success";
+                
+                setTimeout(() => {
+                    responseBox.style.display = 'none';
+                }, 5000);
+            }, 2500);
+        }
+
+        function simulasiFCM() {
+            const responseBox = document.getElementById('fcm-response');
+            responseBox.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <strong>Notifikasi Berhasil Dikirim! 🔔</strong><br>
+                    Pesan "Driver Anda telah tiba!" berhasil dikirim melalui FCM Server ke semua perangkat terdaftar.
+                </div>
+            `;
+            responseBox.style.display = 'flex';
+            
+            setTimeout(() => {
+                responseBox.style.display = 'none';
+            }, 5000);
+        }
+
+        function initMap() {
+            const gojekOffice = { lat: -6.2418, lng: 106.8016 }; 
+            
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 17,
+                center: gojekOffice,
+                styles: [
+                    {
+                        featureType: "poi",
+                        elementType: "labels",
+                        stylers: [{ visibility: "on" }]
+                    }
+                ],
+                mapTypeControl: true,
+                streetViewControl: true,
+                fullscreenControl: true,
+            });
+            
+            const marker = new google.maps.Marker({
+                position: gojekOffice,
+                map: map,
+                title: 'Kantor Gojek - Pasaraya Blok M',
+                animation: google.maps.Animation.DROP,
+            });
+            
+            const infoWindow = new google.maps.InfoWindow({
+                content: `
+                    <div style="padding: 10px;">
+                        <h3 style="color: #00AA13; margin: 0 0 10px 0; font-size: 16px;">
+                            <i class="fas fa-building"></i> Kantor Gojek
+                        </h3>
+                        <p style="margin: 5px 0; color: #525252;">
+                            <i class="fas fa-map-marker-alt"></i> Pasaraya Blok M<br>
+                            Jakarta Selatan
+                        </p>
+                    </div>
+                `
+            });
+            
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+            
+            setTimeout(() => {
+                infoWindow.open(map, marker);
+            }, 500);
+        }
+    </script>
+    
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4Lp8Ryd3wpTxZTO0y7ZX73Fqbltae7Pk&callback=initMap">
+    </script>
+
+</body>
+</html>
